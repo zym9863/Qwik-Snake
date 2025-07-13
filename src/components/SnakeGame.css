@@ -1,0 +1,86 @@
+.snake-game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.game-info {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.game-info h1 {
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.game-info p {
+  margin: 5px 0;
+  font-size: 18px;
+  color: #666;
+}
+
+.game-over {
+  color: #ff0000 !important;
+  font-weight: bold;
+  font-size: 20px !important;
+}
+
+.game-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.game-controls button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.game-controls button:hover {
+  background-color: #45a049;
+}
+
+.game-board {
+  position: relative;
+  background-color: #333;
+  border: 2px solid #555;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.snake-segment {
+  position: absolute;
+  background-color: #4CAF50;
+  border: 1px solid #45a049;
+  box-sizing: border-box;
+}
+
+.snake-segment:first-child {
+  background-color: #2E7D32;
+}
+
+.food {
+  position: absolute;
+  background-color: #ff0000;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+.instructions {
+  margin-top: 20px;
+  text-align: center;
+  color: #666;
+}
+
+.instructions p {
+  margin: 5px 0;
+  font-size: 14px;
+}
