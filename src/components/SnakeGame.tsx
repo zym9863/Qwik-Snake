@@ -100,13 +100,13 @@ export const SnakeGame = component$(() => {
   const scoreChanged = useComputed$(() => gameState.score !== gameState.previousScore);
 
   const handleKeyPress = $((e: KeyboardEvent) => {
-    if (!gameState.isPlaying && !gameState.gameOver && e.key === ' ') {
-      resumeGame();
-      return;
-    }
-
-    if (gameState.isPlaying && e.key === ' ') {
-      pauseGame();
+    if (e.key === ' ') {
+      e.preventDefault();
+      if (gameState.isPlaying) {
+        pauseGame();
+      } else if (!gameState.gameOver) {
+        resumeGame();
+      }
       return;
     }
 
