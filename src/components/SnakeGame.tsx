@@ -1,4 +1,4 @@
-import { component$, useSignal, useVisibleTask$, $, useStore } from '@builder.io/qwik';
+import { component$, useSignal, useVisibleTask$, $, useStore, useComputed$ } from '@builder.io/qwik';
 
 export interface Position {
   x: number;
@@ -12,6 +12,7 @@ export interface GameState {
   gameOver: boolean;
   score: number;
   isPlaying: boolean;
+  previousScore: number;
 }
 
 export const SnakeGame = component$(() => {
@@ -26,6 +27,7 @@ export const SnakeGame = component$(() => {
     gameOver: false,
     score: 0,
     isPlaying: false,
+    previousScore: 0,
   });
 
   const gameLoopRef = useSignal<number | null>(null);
@@ -65,6 +67,7 @@ export const SnakeGame = component$(() => {
     newSnake.unshift(head);
 
     if (head.x === gameState.food.x && head.y === gameState.food.y) {
+      gameState.previousScore = gameState.score;
       gameState.score += 10;
       gameState.food = await generateFood();
     } else {
@@ -80,6 +83,7 @@ export const SnakeGame = component$(() => {
     gameState.direction = { x: 1, y: 0 };
     gameState.gameOver = false;
     gameState.score = 0;
+    gameState.previousScore = 0;
     gameState.isPlaying = true;
   });
 
@@ -92,6 +96,8 @@ export const SnakeGame = component$(() => {
       gameState.isPlaying = true;
     }
   });
+
+  const scoreChanged = useComputed$(() => gameState.score !== gameState.previousScore);
 
   const handleKeyPress = $((e: KeyboardEvent) => {
     if (!gameState.isPlaying && !gameState.gameOver && e.key === ' ') {
@@ -149,7 +155,12 @@ export const SnakeGame = component$(() => {
     <div class="snake-game">
       <div class="game-info">
         <h1>贪吃蛇游戏</h1>
-        <p>分数: {gameState.score}</p>
+        <div class="score">
+          <span>分数:</span>
+          <span class={`score-value ${scoreChanged.value ? 'score-increase' : ''}`}>
+            {gameState.score}
+          </span>
+        </div>
         {gameState.gameOver && <p class="game-over">游戏结束!</p>}
         {!gameState.isPlaying && !gameState.gameOver && <p>按空格键开始/继续</p>}
         {gameState.isPlaying && <p>按空格键暂停</p>}
@@ -197,8 +208,9 @@ export const SnakeGame = component$(() => {
       </div>
 
       <div class="instructions">
-        <p>使用方向键控制蛇的移动</p>
-        <p>空格键: 暂停/继续</p>
+        <h3>游戏说明</h3>
+        <p>使用 <kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd> 方向键控制蛇的移动</p>
+        <p><kbd>空格键</kbd>: 暂停/继续游戏</p>
       </div>
     </div>
   );
